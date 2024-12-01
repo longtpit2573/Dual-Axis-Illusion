@@ -1,0 +1,24 @@
+# HTML
+# Archive your static HTML project and save it with the build record.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  name: Default
+  demands:
+    - agent.name -equals LAPTOP-PRG4FGV9  # Chạy trên agent cụ thể này
+  
+
+steps:
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(build.sourcesDirectory)'
+    includeRootFolder: false
+- task: PublishBuildArtifacts@1
+  inputs:
+    azureSubscription: 'game' # Tên Service Connection đã tạo
+    appName: 'TestAppGame'             # Tên Azure App Service của bạn
+    package: '$(Pipeline.Workspace)/drop/*.zip' # File ZIP được deploy
